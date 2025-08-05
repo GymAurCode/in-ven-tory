@@ -4,6 +4,7 @@
   "description": "Eyercall Desktop Inventory Management Application",
   "main": "main.js",
   "scripts": {
+    "build:exe": "npm run build:frontend && electron-builder --windows",
     "start": "electron .",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"wait-on http://localhost:5173 && electron .\"",
     "dev:backend": "cd backend && npm run dev",
