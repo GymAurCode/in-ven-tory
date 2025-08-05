@@ -1,0 +1,92 @@
+{
+  "name": "eyercall-inventory-app",
+  "version": "1.0.0",
+  "description": "Eyercall Desktop Inventory Management Application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:frontend && electron-builder",
+    "build:frontend": "cd frontend && npm run build",
+    "dist": "npm run build:frontend && electron-builder --publish=never",
+    "dist:win": "npm run build:frontend && electron-builder --win --publish=never",
+    "dist:simple": "npm run build:frontend && electron-builder --publish=never --config.npmRebuild=false",
+    "dist:working": "node build-simple.js",
+    "dist:final": "npm run build:frontend && electron-builder --win --x64 --publish=never --config.asarUnpack=backend/**/* --config.extraResources=backend/db",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": [
+    "electron",
+    "inventory",
+    "desktop",
+    "eyercall"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^12.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "exceljs": "^4.4.0",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
+    "multer": "^1.4.5-lts.1",
+    "pdfkit": "^0.14.0"
+  },
+  "build": {
+    "appId": "com.eyercall.inventory",
+    "productName": "Eyercall Inventory",
+    "directories": {
+      "output": "dist"
+    },
+    "asarUnpack": [
+      "backend/**/*"
+    ],
+    "files": [
+      "main.js",
+      "backend/**/*",
+      "frontend/dist/**/*",
+      "node_modules/**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "public/icon.png"
+    },
+    "extraResources": [
+      {
+        "from": "backend/db",
+        "to": "db"
+      },
+      {
+        "from": "backend/config",
+        "to": "config"
+      }
+    ],
+    "npmRebuild": false,
+    "buildDependenciesFromSource": false,
+    "electronVersion": "28.0.0",
+    "compression": "normal"
+  }
+}
